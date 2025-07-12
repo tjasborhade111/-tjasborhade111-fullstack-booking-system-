@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL; // ✅ Correct place to declare
+
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
@@ -8,9 +10,8 @@ function Signup() {
     password: ''
   });
 
-  const [theme, setTheme] = useState('dark'); // 👈 Theme state
+  const [theme, setTheme] = useState('dark');
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,6 +51,7 @@ function Signup() {
 
   return (
     <>
+      {/* Your existing inline <style> and JSX code is unchanged */}
       <style>{`
         :root {
           --bg-color: #f9fafb;
@@ -294,8 +296,6 @@ function Signup() {
           <p className="contact-description">
             Already have an account? <Link to="/login">Login</Link>
           </p>
-
-
         </div>
       </div>
     </>

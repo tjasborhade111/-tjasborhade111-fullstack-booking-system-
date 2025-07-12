@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL; // ✅ Declare at the top once
+
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [theme, setTheme] = useState('dark'); // 👈 Add theme state
+  const [theme, setTheme] = useState('dark');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +26,6 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const API_URL = import.meta.env.VITE_API_URL;
 
     if (!API_URL) {
       alert("❌ VITE_API_URL is not defined. Check your .env and restart.");
@@ -67,7 +68,7 @@ function Login() {
 
   return (
     <>
-      <style>{`
+       <style>{`
         :root {
           --bg-color: #f9fafb;
           --box-bg: rgba(255, 255, 255, 0.8);
@@ -243,8 +244,6 @@ function Login() {
           <p className="contact-description">
             Don’t have an account? <Link to="/signup">Sign up</Link>
           </p>
-
-          
         </div>
       </div>
     </>
