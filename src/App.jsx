@@ -5,24 +5,25 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import FloatingFAB from './pages/FloatingFAB';
 import TeacherPage from './pages/TeacherPage';
 import DoctorPage from './pages/DoctorPage';
 import SalonPage from './pages/SalonPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import BookingCategories from './pages/BookingCategories';
-import ProtectedRoute from './pages/ProtectedRoute';
 import BookingHistory from './pages/BookingHistory';
+import ProtectedRoute from './pages/ProtectedRoute';
 
-
+import FloatingFAB from "./pages/FloatingFAB"; // only if still inside pages folder
 import { ThemeProvider } from "./context/ThemeContext";
 
 import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideFAB = location.pathname === '/login' || location.pathname === '/signup';
+  
+  // ✅ Hide FAB on auth pages
+  const hideCommonUI = ['/login', '/signup', '/'].includes(location.pathname);
 
   return (
     <div className="app-content">
@@ -76,7 +77,8 @@ function AppContent() {
         />
       </Routes>
 
-      {!hideFAB && <FloatingFAB />}
+      {/* ✅ Show FloatingFAB only when not on auth pages */}
+      {!hideCommonUI && <FloatingFAB />}
     </div>
   );
 }
