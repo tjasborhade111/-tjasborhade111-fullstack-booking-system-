@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL; // ✅ Declare at the top once
-
+console.log("🌐 VITE_API_URL:", API_URL);
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [theme, setTheme] = useState('dark');
