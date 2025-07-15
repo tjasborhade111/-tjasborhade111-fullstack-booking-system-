@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
-import { FaRegCalendarAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaRegCalendarAlt, FaArrowRight } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
 
 function Home() {
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const isDark = theme === 'dark';
 
   const styles = {
@@ -60,7 +62,23 @@ function Home() {
       fontSize: '1.05rem',
       color: isDark ? '#cbd5e1' : '#475569',
       lineHeight: 1.6,
+      marginBottom: '30px',
     },
+    button: {
+      background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+      color: '#fff',
+      border: 'none',
+      padding: '14px 28px',
+      borderRadius: '50px',
+      fontSize: '1rem',
+      fontWeight: 600,
+      cursor: 'pointer',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '10px',
+      boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)',
+      transition: 'transform 0.2s, box-shadow 0.2s',
+    }
   };
 
   return (
@@ -80,10 +98,24 @@ function Home() {
           Whether you're looking for educational support, health consultation, or grooming, we've got it covered.
           Sign up, log in, and manage all your bookings from one place — anytime, anywhere.
         </p>
+
+        <button
+          style={styles.button}
+          onClick={() => navigate('/categories')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 12px 35px rgba(59, 130, 246, 0.6)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.4)';
+          }}
+        >
+          Get Started Today <FaArrowRight />
+        </button>
       </div>
     </div>
   );
 }
 
 export default Home;
-

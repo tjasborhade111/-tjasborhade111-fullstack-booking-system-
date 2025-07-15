@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const API_URL = import.meta.env.VITE_API_URL; // ✅ Declare at the top once
+const API_URL = import.meta.env.VITE_API_URL;
 console.log("🌐 VITE_API_URL:", API_URL);
+
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [theme, setTheme] = useState('dark');
@@ -12,7 +13,7 @@ function Login() {
     const token = localStorage.getItem('token');
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (token && isLoggedIn) {
-      navigate('/categories');
+      navigate('/home'); // ✅ Redirect to Home
     }
   }, [navigate]);
 
@@ -56,7 +57,7 @@ function Login() {
         localStorage.setItem('userEmail', user.email || '');
 
         alert('✅ Login successful!');
-        navigate('/categories');
+        navigate('/home'); // ✅ Redirect to Home
       } else {
         alert(`❌ ${result.message || 'Login failed'}`);
       }
@@ -68,7 +69,7 @@ function Login() {
 
   return (
     <>
-       <style>{`
+      <style>{`
         :root {
           --bg-color: #f9fafb;
           --box-bg: rgba(255, 255, 255, 0.8);
