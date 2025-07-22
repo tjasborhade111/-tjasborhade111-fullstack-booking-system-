@@ -15,7 +15,7 @@ function TeacherPage() {
 
   const teachers = [
     {
-      name: 'Mrs. Arpita Sharma',
+      name: 'Mr. Jayesh Sharma',
       subject: 'Mathematics',
       experience: '8+ years',
       img: 'https://i.pravatar.cc/150?img=14',
@@ -43,14 +43,14 @@ function TeacherPage() {
       info: 'Expert in Python & Web Dev. Works with school robotics clubs.'
     },
     {
-      name: 'Mrs. Neetu Jain',
+      name: 'Mr. Sujal Jain',
       subject: 'History',
       experience: '15+ years',
       img: 'https://i.pravatar.cc/150?img=18',
       info: 'Ancient & Modern History. CBSE textbook reviewer & trainer.'
     },
     {
-      name: 'Mr. Tarun Patel',
+      name: 'Mrs. Nita Patel',
       subject: 'Physics',
       experience: '9+ years',
       img: 'https://i.pravatar.cc/150?img=19',
@@ -69,11 +69,6 @@ function TeacherPage() {
     window.addEventListener('resize', updateCols);
     return () => window.removeEventListener('resize', updateCols);
   }, []);
-
-  const handleBook = (teacher) => {
-    setSelectedTeacher(teacher);
-    setShowModal(true);
-  };
 
   const toggleInfo = (index) => {
     setSelectedIndex(prev => prev === index ? null : index);
@@ -192,9 +187,16 @@ function TeacherPage() {
               <div style={styles.name}>{t.name}</div>
               <div style={styles.subject}>{t.subject}</div>
 
-              <button style={styles.button} onClick={() => handleBook(t)}>
-                Book Session
+              <button
+                style={styles.button}
+                onClick={() => {
+                  setSelectedTeacher(t); // ✅ Corrected
+                  setShowModal(true);
+                }}
+              >
+                Book Now
               </button>
+
               <button style={styles.button} onClick={() => toggleInfo(i)}>
                 ℹ More Info
               </button>
@@ -207,7 +209,7 @@ function TeacherPage() {
         })}
       </div>
 
-      {showModal && (
+      {showModal && selectedTeacher && (
         <BookingModal
           onClose={() => setShowModal(false)}
           provider={selectedTeacher}

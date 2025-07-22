@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import FloatingFAB from './FloatingFAB';
+import Navbar from './Navbar'; // ✅ Add this
 import { ThemeContext } from '../context/ThemeContext';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
 function About() {
   const { theme } = useContext(ThemeContext);
-
   const isDark = theme === 'dark';
 
   const styles = {
@@ -19,7 +19,7 @@ function About() {
         : `radial-gradient(circle at 25% 25%, rgba(203, 213, 225, 0.2) 0%, transparent 50%),
            radial-gradient(circle at 75% 75%, rgba(191, 219, 254, 0.2) 0%, transparent 50%)`,
       display: 'flex',
-      justifyContent: 'center',
+      flexDirection: 'column',
       alignItems: 'center',
       padding: '80px 20px',
       fontFamily: 'Inter, sans-serif',
@@ -86,53 +86,56 @@ function About() {
   };
 
   return (
-    <div style={styles.container}>
-      <style>{`
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
+    <>
+      <Navbar /> {/* ✅ Render Navbar at top */}
+      <div style={styles.container}>
+        <style>{`
+          @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
 
-        @keyframes pulse {
-          from { transform: scale(1); opacity: 0.7; }
-          to { transform: scale(1.05); opacity: 1; }
-        }
+          @keyframes pulse {
+            from { transform: scale(1); opacity: 0.7; }
+            to { transform: scale(1.05); opacity: 1; }
+          }
 
-        @keyframes backgroundMove {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(10px, -10px); }
-        }
+          @keyframes backgroundMove {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+          }
 
-        @media (max-width: 768px) {
-          .about-title { font-size: 2rem !important; }
-          .about-text { font-size: 1rem !important; }
-          .icon-animation { font-size: 2rem !important; }
-        }
+          @media (max-width: 768px) {
+            .about-title { font-size: 2rem !important; }
+            .about-text { font-size: 1rem !important; }
+            .icon-animation { font-size: 2rem !important; }
+          }
 
-        @media (max-width: 480px) {
-          .about-box { padding: 25px 15px !important; }
-          .about-title { font-size: 1.6rem !important; }
-          .about-text { font-size: 0.95rem !important; line-height: 1.6 !important; }
-          .icon-animation { font-size: 1.8rem !important; }
-        }
-      `}</style>
+          @media (max-width: 480px) {
+            .about-box { padding: 25px 15px !important; }
+            .about-title { font-size: 1.6rem !important; }
+            .about-text { font-size: 0.95rem !important; line-height: 1.6 !important; }
+            .icon-animation { font-size: 1.8rem !important; }
+          }
+        `}</style>
 
-      <div style={styles.bgAnimation}></div>
+        <div style={styles.bgAnimation}></div>
 
-      <div style={styles.box} className="about-box">
-        <div style={styles.icon} className="icon-animation"><FaRegCalendarAlt /></div>
-        <h2 style={styles.title} className="about-title">About Us</h2>
-        <p style={styles.text} className="about-text">
-          Welcome to our <strong>Online Booking System</strong> — your trusted platform for seamless and efficient appointment management.
-          Whether you're booking a doctor’s appointment, a salon visit, or a home service, we make it fast, simple, and hassle-free.
-          Our mission is to bring convenience to your fingertips by providing a one-stop solution for all your booking needs.
-          With a user-friendly interface, secure login, and instant confirmations, your time is always respected and managed efficiently.
-          Start scheduling smarter — anytime, anywhere. Thank you for choosing us!
-        </p>
+        <div style={styles.box} className="about-box">
+          <div style={styles.icon} className="icon-animation"><FaRegCalendarAlt /></div>
+          <h2 style={styles.title} className="about-title">About Us</h2>
+          <p style={styles.text} className="about-text">
+            Welcome to our <strong>Online Booking System</strong> — your trusted platform for seamless and efficient appointment management.
+            Whether you're booking a doctor’s appointment, a salon visit, or a home service, we make it fast, simple, and hassle-free.
+            Our mission is to bring convenience to your fingertips by providing a one-stop solution for all your booking needs.
+            With a user-friendly interface, secure login, and instant confirmations, your time is always respected and managed efficiently.
+            Start scheduling smarter — anytime, anywhere. Thank you for choosing us!
+          </p>
+        </div>
+
+        <FloatingFAB />
       </div>
-
-      <FloatingFAB />
-    </div>
+    </>
   );
 }
 

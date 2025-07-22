@@ -1,27 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
-import BookingModal from './BookingModal'; // ✅ Make sure path is correct (in pages folder)
+import BookingModal from './BookingModal'; // ✅ Make sure path is correct
 
 function DoctorPage() {
   const [hovered, setHovered] = useState(null);
   const [columns, setColumns] = useState(3);
   const [selectedDoctorIndex, setSelectedDoctorIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState(null); // ✅ single source
 
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
 
   const doctors = [
     {
-      name: 'Dr. Aarti Mehta',
+      name: 'Dr. Ansh Mehta',
       specialty: 'Cardiologist',
       img: 'https://i.pravatar.cc/150?img=8',
       info: 'Over 15 years of experience in cardiac surgery at Fortis Hospital.'
     },
     {
-      name: 'Dr. Raj Singh',
+      name: 'Dr. Riya Singh',
       specialty: 'Dermatologist',
       img: 'https://i.pravatar.cc/150?img=9',
       info: 'Skin and hair specialist practicing at DermaPlus Clinic.'
@@ -39,7 +38,7 @@ function DoctorPage() {
       info: 'Expert in brain and spine disorders, works at Max Healthcare.'
     },
     {
-      name: 'Dr. Sneha Rao',
+      name: 'Dr. Vedante Rao',
       specialty: 'Gynecologist',
       img: 'https://i.pravatar.cc/150?img=12',
       info: 'Women’s health expert with 10+ years at Cloudnine Hospital.'
@@ -63,11 +62,6 @@ function DoctorPage() {
     window.addEventListener('resize', updateCols);
     return () => window.removeEventListener('resize', updateCols);
   }, []);
-
-  const handleBook = (name) => {
-    setSelectedDoctor(name);
-    setShowModal(true);
-  };
 
   const handleInfo = (index) => {
     setSelectedDoctorIndex(prev => prev === index ? null : index);
@@ -175,9 +169,16 @@ function DoctorPage() {
               <div style={styles.name}>{doc.name}</div>
               <div style={styles.specialty}>{doc.specialty}</div>
 
-              <button style={styles.button} onClick={() => handleBook(doc.name)}>
+              <button
+                style={styles.button}
+                onClick={() => {
+                  setSelectedDoctor(doc);  // ✅ Pass full doctor object
+                  setShowModal(true);      // ✅ Show booking modal
+                }}
+              >
                 Book Now
               </button>
+
               <button style={styles.button} onClick={() => handleInfo(i)}>
                 ℹ More Info
               </button>
@@ -190,10 +191,10 @@ function DoctorPage() {
         })}
       </div>
 
-      {showModal && (
+      {showModal && selectedDoctor && (
         <BookingModal
           category="Doctor"
-          providerName={selectedDoctor}
+          provider={selectedDoctor}         // ✅ full doctor object
           onClose={() => setShowModal(false)}
         />
       )}

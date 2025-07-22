@@ -11,17 +11,22 @@ function FloatingFAB() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-  }, []);
+    document.body.className = theme; // ✅ Apply theme to body
+  }, [theme]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    alert('👋 You have been logged out.');
-    setIsLoggedIn(false);
-    navigate('/login');
+    const confirmLogout = window.confirm("Do you really want to logout?");
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+      alert('👋 You have been logged out.');
+      setIsLoggedIn(false);
+      navigate('/login');
+    }
   };
 
   return (
     <>
+  
       <div className="fab-container">
         <button className="fab-main" onClick={() => setIsOpen(!isOpen)}>
           ☰
@@ -29,15 +34,9 @@ function FloatingFAB() {
 
         {isOpen && (
           <div className="fab-options">
-            {isLoggedIn && (
-              <>
-                <Link to="/home" className="fab-option">🏠 Home</Link>
-                <Link to="/categories" className="fab-option">📅 Booking</Link>
-                <Link to="/history" className="fab-option">📜 History</Link>
-              </>
-            )}
-            <Link to="/about" className="fab-option">ℹ️ About</Link>
-            <Link to="/contact" className="fab-option">📞 Contact</Link>
+             <Link to="/home" className="fab-option">🏠 Home</Link>
+            <Link to="/categories" className="fab-option">📅 Booking</Link>
+            <Link to="/history" className="fab-option">📜 History</Link>
 
             <button className="fab-option" onClick={toggleTheme}>
               {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
@@ -56,6 +55,18 @@ function FloatingFAB() {
       </div>
 
       <style>{`
+        body.dark {
+          --btn-bg: #1e3a8a;
+          --option-bg: #1e293b;
+          --option-text: #e2e8f0;
+        }
+
+        body.light {
+          --btn-bg: #4b5563;
+          --option-bg: #ffffff;
+          --option-text: #1e3a8a;
+        }
+
         .fab-container {
           position: fixed;
           bottom: 25px;
@@ -111,12 +122,7 @@ function FloatingFAB() {
           background-color: #e0e7ff;
         }
 
-        .dark .fab-option {
-          background-color: #1e293b;
-          color: #e2e8f0;
-        }
-
-        .dark .fab-option:hover {
+        body.dark .fab-option:hover {
           background-color: #334155;
         }
       `}</style>

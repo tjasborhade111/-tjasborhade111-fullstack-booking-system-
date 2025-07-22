@@ -1,6 +1,4 @@
-// ✅ BookingHistory.jsx (Updated with ThemeContext and Enhanced CSS)
 import React, { useEffect, useState, useContext } from 'react';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
 
 function BookingHistory() {
@@ -10,24 +8,27 @@ function BookingHistory() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const userId = localStorage.getItem('userId');
-      if (!userId) {
-        alert('❌ No userId found. Please login.');
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (!user || !user._id) {
+        alert("❌ No user found. Please login.");
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings/${userId}`);
-        const result = await response.json();
-        if (Array.isArray(result)) {
-          setHistory(result);
-        } else {
-          console.error('Unexpected response:', result);
-          setHistory([]);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/bookings/user/${user._id}`
+        );
+
+        if (!res.ok) {
+          throw new Error(`Server responded with status ${res.status}`);
         }
-      } catch (error) {
-        console.error('❌ Error fetching booking history:', error);
+
+        const data = await res.json();
+        setHistory(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("❌ Failed to fetch booking history:", err.message);
         setHistory([]);
       } finally {
         setLoading(false);
@@ -39,469 +40,355 @@ function BookingHistory() {
 
   const getCategoryIcon = (category) => {
     const icons = {
-      'education': '📚',
-      'health': '🏥',
-      'home': '🏠',
-      'beauty': '💄',
-      'fitness': '💪',
-      'technology': '💻',
-      'automotive': '🚗',
-      'food': '🍕',
-      'default': '📋'
+      doctor: '🏥',
+      teacher: '📚',
+      salon: '💇‍♀️',
+      default: '📋',
     };
     return icons[category?.toLowerCase()] || icons.default;
   };
 
   const getCategoryColor = (category) => {
     const colors = {
-      'education': '#3b82f6',
-      'health': '#ef4444',
-      'home': '#10b981',
-      'beauty': '#f59e0b',
-      'fitness': '#8b5cf6',
-      'technology': '#06b6d4',
-      'automotive': '#f97316',
-      'food': '#84cc16',
-      'default': '#6b7280'
+      doctor: '#ef4444',
+      teacher: '#3b82f6',
+      salon: '#f59e0b',
+      default: '#6b7280',
     };
     return colors[category?.toLowerCase()] || colors.default;
   };
 
-  const bgColor = theme === 'dark' ? '#0f172a' : '#f8fafc';
-  const cardBg = theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : '#ffffff';
-  const borderColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : '#e2e8f0';
+  const formatBookedAt = (datetime) => {
+    return new Date(datetime || Date.now()).toLocaleString('en-IN', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    });
+  };
+
   const textColor = theme === 'dark' ? '#cbd5e1' : '#1e293b';
   const subtitleColor = theme === 'dark' ? '#94a3b8' : '#475569';
 
   return (
     <>
-      <style>{`
-        .booking-history-container {
-          min-height: 100vh;
-          background: ${theme === 'dark' 
-            ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' 
-            : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'};
-          padding: 80px 20px;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+    <style>{`
+  .booking-history-container {
+    padding: 2rem;
+    background-color: white;
+    color: black;
+    min-height: 100vh;
+  }
+     .dark .booking-history-container {
+    background-color: #0f172a;
+    color: #f1f5f9;
+  }
 
-        .history-wrapper {
-          max-width: 1200px;
-          margin: 0 auto;
-        }
+  .history-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 
-        .history-header {
-          text-align: center;
-          margin-bottom: 50px;
-          position: relative;
-        }
+  .history-title {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    color: #334155;
+  }
 
-        .history-header::before {
-          content: '';
-          position: absolute;
-          top: -20px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80px;
-          height: 4px;
-          background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-          border-radius: 2px;
-        }
+  .history-subtitle {
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
 
-        .history-title {
-          color: ${textColor};
-          font-size: 3rem;
-          font-weight: 700;
-          margin-bottom: 16px;
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-        }
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+  }
 
-        .history-subtitle {
-          color: ${subtitleColor};
-          font-size: 1.2rem;
-          font-weight: 400;
-          max-width: 600px;
-          margin: 0 auto;
-          line-height: 1.6;
-        }
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
 
-        .loading-spinner {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 200px;
-        }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
-        .spinner {
-          width: 60px;
-          height: 60px;
-          border: 4px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
-          border-top: 4px solid #3b82f6;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
+  .booking-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
 
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
+  .stat-item {
+    text-align: center;
+  }
 
-        .no-bookings {
-          background: ${cardBg};
-          border: 1px solid ${borderColor};
-          border-radius: 20px;
-          padding: 60px 40px;
-          text-align: center;
-          max-width: 500px;
-          margin: 0 auto;
-          box-shadow: ${theme === 'dark' 
-            ? '0 20px 40px rgba(0, 0, 0, 0.3)' 
-            : '0 20px 40px rgba(0, 0, 0, 0.1)'};
-          backdrop-filter: blur(10px);
-          border: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.2)'};
-        }
+  .stat-number {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #0f172a;
+  }
 
-        .no-bookings-icon {
-          font-size: 4rem;
-          margin-bottom: 20px;
-          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
+  .stat-label {
+    color: #64748b;
+  }
 
-        .no-bookings-title {
-          color: ${textColor};
-          font-size: 1.8rem;
-          font-weight: 600;
-          margin-bottom: 12px;
-        }
+  .booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
 
-        .no-bookings-text {
-          color: ${subtitleColor};
-          font-size: 1.1rem;
-          line-height: 1.6;
-        }
+  .booking-card {
+   background-color: #1e293b;
+   color: #f1f5f9;
+   border-color: #334155;
+    border: 1px solid #e2e8f0;
+    border-left: 6px solid var(--category-color, #6b7280);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+  }
 
-        .booking-stats {
-          display: flex;
-          gap: 30px;
-          justify-content: center;
-          margin-bottom: 50px;
-          flex-wrap: wrap;
-        }
+  .booking-card:hover {
+    transform: translateY(-4px);
+  }
 
-        .stat-item {
-          background: ${cardBg};
-          border: 1px solid ${borderColor};
-          border-radius: 16px;
-          padding: 30px 40px;
-          text-align: center;
-          min-width: 180px;
-          position: relative;
-          overflow: hidden;
-          box-shadow: ${theme === 'dark' 
-            ? '0 10px 30px rgba(0, 0, 0, 0.3)' 
-            : '0 10px 30px rgba(0, 0, 0, 0.1)'};
-          backdrop-filter: blur(10px);
-          transition: all 0.3s ease;
-        }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
 
-        .stat-item::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-        }
+  .category-icon {
+    font-size: 1.5rem;
+  }
 
-        .stat-item:hover {
-          transform: translateY(-5px);
-          box-shadow: ${theme === 'dark' 
-            ? '0 20px 40px rgba(0, 0, 0, 0.4)' 
-            : '0 20px 40px rgba(0, 0, 0, 0.15)'};
-        }
+  .category-title {
+    font-size: 1.125rem;
+    color: var(--category-color, #6b7280);
+    color: #334155;
+  }
 
-        .stat-number {
-          display: block;
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: ${textColor};
-          margin-bottom: 8px;
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
+  .dark .category-title {
+    color: #cbd5e1;
+  }
 
-        .stat-label {
-          color: ${subtitleColor};
-          font-size: 1rem;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
+  .booking-details {
+    margin-bottom: 1rem;
+  }
 
-        .booking-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-          gap: 30px;
-        }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
 
-        .booking-card {
-          background: ${cardBg};
-          border: 1px solid ${borderColor};
-          border-radius: 20px;
-          padding: 30px;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          box-shadow: ${theme === 'dark' 
-            ? '0 10px 30px rgba(0, 0, 0, 0.3)' 
-            : '0 10px 30px rgba(0, 0, 0, 0.1)'};
-          backdrop-filter: blur(10px);
-        }
+  .detail-label {
+    font-weight: 500;
+    color: #64748b; 
+  }
 
-        .booking-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: var(--category-color);
-          border-radius: 20px 20px 0 0;
-        }
+   .dark .detail-label {
+    color: #cbd5e1;
+  }
 
-        .booking-card:hover {
-          transform: translateY(-8px);
-          box-shadow: ${theme === 'dark' 
-            ? '0 20px 40px rgba(0, 0, 0, 0.4)' 
-            : '0 20px 40px rgba(0, 0, 0, 0.15)'};
-          border-color: var(--category-color);
-        }
+  .detail-value {
+    color: #f8fafc;
+    max-width: 60%;
+    text-align: right;
+  }
 
-        .card-header {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          margin-bottom: 25px;
-          padding-bottom: 20px;
-          border-bottom: 1px solid ${borderColor};
-        }
+  .booking-date {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: right;
+  }
+       .dark .booking-date {
+    color: #94a3b8;
+  }
+  .no-bookings {
+    text-align: center;
+    margin-top: 3rem;
+  }
+`}
+</style>
 
-        .category-icon {
-          font-size: 2.5rem;
-          width: 60px;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--category-color);
-          border-radius: 16px;
-          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
+    <div className="booking-history-container">
+      <div className="history-wrapper">
+        <h1 className="history-title" style={{ textAlign: 'center' }}>
+          📜 Booking History
+        </h1>
+        <p className="history-subtitle" style={{ textAlign: 'center' }}>
+          Track all your service bookings in one place
+        </p>
 
-        .category-title {
-          color: ${textColor};
-          font-size: 1.4rem;
-          font-weight: 600;
-          text-transform: capitalize;
-          flex: 1;
-        }
-
-        .booking-details {
-          margin-bottom: 25px;
-        }
-
-        .detail-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 15px;
-          padding: 12px 0;
-          border-bottom: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'};
-        }
-
-        .detail-row:last-child {
-          border-bottom: none;
-          margin-bottom: 0;
-        }
-
-        .detail-label {
-          color: ${subtitleColor};
-          font-size: 0.95rem;
-          font-weight: 500;
-          min-width: 80px;
-        }
-
-        .detail-value {
-          color: ${textColor};
-          font-size: 1rem;
-          font-weight: 600;
-          text-align: right;
-          max-width: 60%;
-          word-wrap: break-word;
-        }
-
-        .booking-date {
-          text-align: center;
-          padding-top: 20px;
-          border-top: 1px solid ${borderColor};
-        }
-
-        .date-text {
-          color: ${subtitleColor};
-          font-size: 0.9rem;
-          font-weight: 500;
-          background: ${theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'};
-          padding: 8px 16px;
-          border-radius: 20px;
-          display: inline-block;
-        }
-
-        @media (max-width: 768px) {
-          .booking-history-container {
-            padding: 40px 16px;
-          }
-
-          .history-title {
-            font-size: 2.2rem;
-          }
-
-          .history-subtitle {
-            font-size: 1.1rem;
-          }
-
-          .booking-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-
-          .booking-stats {
-            gap: 20px;
-          }
-
-          .stat-item {
-            min-width: 150px;
-            padding: 25px 30px;
-          }
-
-          .booking-card {
-            padding: 25px;
-          }
-
-          .detail-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-          }
-
-          .detail-value {
-            text-align: left;
-            max-width: 100%;
-          }
-        }
-      `}</style>
-
-      <div className="booking-history-container">
-        <div className="history-wrapper">
-          <div className="history-header">
-            <h1 className="history-title">📜 Booking History</h1>
-            <p className="history-subtitle">Track all your service bookings in one place</p>
+        {loading ? (
+          <div className="loading-spinner">
+            <div className="spinner"></div>
           </div>
+        ) : history.length === 0 ? (
+          <div className="no-bookings">
+            <h3 style={{ color: textColor }}>No Bookings Yet</h3>
+            <p style={{ color: subtitleColor }}>
+              Make your first booking to see history here.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="booking-stats">
+  <div className="stat-item">
+    <div
+      className="stat-number"
+      style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}
+    >
+      {history.length}
+    </div>
+    <div
+      className="stat-label"
+      style={{ color: theme === 'dark' ? '#cbd5e1' : '#64748b' }}
+    >
+      Total Bookings
+    </div>
+  </div>
+  <div className="stat-item">
+    <div
+      className="stat-number"
+      style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}
+    >
+      {new Set(history.map((b) => b.category)).size}
+    </div>
+    <div
+      className="stat-label"
+      style={{ color: theme === 'dark' ? '#cbd5e1' : '#64748b' }}
+    >
+      Categories
+    </div>
+  </div>
+</div>
 
-          {loading ? (
-            <div className="loading-spinner">
-              <div className="spinner"></div>
-            </div>
-          ) : history.length === 0 ? (
-            <div className="no-bookings">
-              <div className="no-bookings-icon">📋</div>
-              <h3 className="no-bookings-title">No Bookings Yet</h3>
-              <p className="no-bookings-text">
-                Your booking history will appear here once you make your first booking.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="booking-stats">
-                <div className="stat-item">
-                  <span className="stat-number">{history.length}</span>
-                  <span className="stat-label">Total Bookings</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">
-                    {new Set(history.map(b => b.category)).size}
-                  </span>
-                  <span className="stat-label">Categories</span>
-                </div>
-              </div>
+            <div className="booking-grid">
+              {history.map((booking, index) => {
+                const category = booking.category?.toLowerCase();
 
-              <div className="booking-grid">
-                {history.map((booking, index) => (
-                  <div 
-                    key={index} 
+                return (
+                  <div
+                    key={index}
                     className="booking-card"
-                    style={{ '--category-color': getCategoryColor(booking.category) }}
+                    style={{
+                      '--category-color': getCategoryColor(category),
+                    }}
                   >
                     <div className="card-header">
                       <div className="category-icon">
-                        {getCategoryIcon(booking.category)}
+                        {getCategoryIcon(category)}
                       </div>
                       <div className="category-title">
-                        {booking.category || 'General Service'}
+                        {booking.category || "Service"}
                       </div>
                     </div>
 
                     <div className="booking-details">
-                      {booking.provider && (
+                      {booking.appointmentWith && (
                         <div className="detail-row">
-                          <span className="detail-label">Provider:</span>
-                          <span className="detail-value">{booking.provider}</span>
+                          <span className="detail-label">Appointment With:</span>
+                          <span className="detail-value">
+                            {booking.appointmentWith}
+                          </span>
                         </div>
                       )}
 
+                      {category === "doctor" && booking.symptoms && (
+                        <div className="detail-row">
+                          <span className="detail-label">Symptoms:</span>
+                          <span className="detail-value">{booking.symptoms}</span>
+                        </div>
+                      )}
+
+                      {category === "teacher" && (
+                        <>
+                          <div className="detail-row">
+                            <span className="detail-label">Subject:</span>
+                            <span className="detail-value">
+                              {booking.subject || "N/A"}
+                            </span>
+                          </div>
+                          <div className="detail-row">
+                            <span className="detail-label">Mode:</span>
+                            <span className="detail-value">
+                              {booking.mode || "N/A"}
+                            </span>
+                          </div>
+                        </>
+                      )}
+
+                      {category === "salon" && (
+                        <>
+                          <div className="detail-row">
+                            <span className="detail-label">Service Type:</span>
+                            <span className="detail-value">
+                              {booking.serviceType || "N/A"}
+                            </span>
+                          </div>
+                          <div className="detail-row">
+                            <span className="detail-label">Stylist:</span>
+                            <span className="detail-value">
+                              {booking.stylist || "N/A"}
+                            </span>
+                          </div>
+                        </>
+                      )}
+
                       <div className="detail-row">
-                        <span className="detail-label">Service:</span>
+                        <span className="detail-label">Name:</span>
                         <span className="detail-value">
-                          {booking.serviceType || booking.subject || booking.symptoms || 'N/A'}
+                          {booking.name || "N/A"}
                         </span>
                       </div>
 
                       <div className="detail-row">
-                        <span className="detail-label">Name:</span>
-                        <span className="detail-value">{booking.name}</span>
-                      </div>
-
-                      <div className="detail-row">
                         <span className="detail-label">Age:</span>
-                        <span className="detail-value">{booking.age}</span>
+                        <span className="detail-value">
+                          {booking.age || "N/A"}
+                        </span>
                       </div>
 
                       <div className="detail-row">
-                        <span className="detail-label">Time:</span>
-                        <span className="detail-value">{booking.timing}</span>
+                        <span className="detail-label">Appointment:</span>
+                        <span className="detail-value">
+                          {booking.date && booking.time
+                            ? `${booking.date} at ${booking.time}`
+                            : "N/A"}
+                        </span>
                       </div>
                     </div>
 
                     <div className="booking-date">
                       <span className="date-text">
-                        Booked on {new Date(booking.bookedAt).toLocaleString()}
+                        Booked on {formatBookedAt(booking.createdAt)}
                       </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
+</>
+  )
 }
-
 export default BookingHistory;

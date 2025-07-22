@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import BookingModal from './BookingModal';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
 
 function SalonPage() {
@@ -175,9 +174,13 @@ function SalonPage() {
               <div style={styles.name}>{s.name}</div>
               <div style={styles.service}>{s.service}</div>
 
-              <button style={styles.button} onClick={() => handleBook(s)}>
+              <button
+                style={styles.button}
+                onClick={() => handleBook(s)}
+              >
                 Book Now
               </button>
+
               <button style={styles.button} onClick={() => toggleInfo(i)}>
                 ℹ More Info
               </button>
@@ -191,8 +194,8 @@ function SalonPage() {
       {showModal && (
         <BookingModal
           onClose={() => setShowModal(false)}
-          provider={selectedSalon}
-          category="salon"
+          providerName={selectedSalon.name}
+          category="Salon"
         />
       )}
     </div>

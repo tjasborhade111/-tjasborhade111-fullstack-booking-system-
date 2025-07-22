@@ -14,20 +14,22 @@ import BookingCategories from './pages/BookingCategories';
 import BookingHistory from './pages/BookingHistory';
 import ProtectedRoute from './pages/ProtectedRoute';
 
-import FloatingFAB from "./pages/FloatingFAB"; // only if still inside pages folder
+import FloatingFAB from "./pages/FloatingFAB";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  
-  // ✅ Hide FAB on auth pages
-  const hideCommonUI = ['/login', '/signup', '/'].includes(location.pathname);
+
+  // ❌ Prevent FloatingFAB on auth routes only
+  const authRoutes = ['/login', '/signup'];
+  const hideFAB = authRoutes.includes(location.pathname);
 
   return (
     <div className="app-content">
       <Routes>
+        {/* ✅ Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -35,6 +37,7 @@ function AppContent() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* ✅ Protected Routes */}
         <Route
           path="/categories"
           element={
@@ -77,8 +80,8 @@ function AppContent() {
         />
       </Routes>
 
-      {/* ✅ Show FloatingFAB only when not on auth pages */}
-      {!hideCommonUI && <FloatingFAB />}
+      {/* ✅ FAB only on non-auth routes */}
+      {!hideFAB && <FloatingFAB />}
     </div>
   );
 }

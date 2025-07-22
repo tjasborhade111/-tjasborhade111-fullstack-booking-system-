@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import FloatingFAB from './FloatingFAB';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
+import Navbar from './Navbar';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ function Contact() {
       minHeight: '100vh',
       background: isDark ? '#0f172a' : '#f9fafb',
       display: 'flex',
-      justifyContent: 'center',
+      flexDirection: 'column',
       alignItems: 'center',
       padding: '80px 20px',
       fontFamily: 'Inter, sans-serif',
@@ -115,74 +115,77 @@ function Contact() {
   };
 
   return (
-    <div style={styles.container}>
-      <style>{`
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-          from { transform: scale(1); opacity: 0.7; }
-          to { transform: scale(1.05); opacity: 1; }
-        }
-      `}</style>
+    <>
+      <Navbar />
+      <div style={styles.container}>
+        <style>{`
+          @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes pulse {
+            from { transform: scale(1); opacity: 0.7; }
+            to { transform: scale(1.05); opacity: 1; }
+          }
+        `}</style>
 
-      <div style={styles.box} className="contact-box">
-        <div style={styles.icon} className="icon-animation">📞</div>
-        <h2 style={styles.title} className="contact-title">Contact Us</h2>
-        <p style={styles.description} className="contact-description">
-          Have questions or need help with your bookings? Fill out the form below and we'll get back to you shortly.
-        </p>
+        <div style={styles.box} className="contact-box">
+          <div style={styles.icon} className="icon-animation">📞</div>
+          <h2 style={styles.title} className="contact-title">Contact Us</h2>
+          <p style={styles.description} className="contact-description">
+            Have questions or need help with your bookings? Fill out the form below and we'll get back to you shortly.
+          </p>
 
-        <form style={styles.form} onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label style={styles.label} htmlFor="name">Name</label>
-            <input
-              style={styles.input}
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form style={styles.form} onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label style={styles.label} htmlFor="name">Name</label>
+              <input
+                style={styles.input}
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter your name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label style={styles.label} htmlFor="email">Email</label>
-            <input
-              style={styles.input}
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label style={styles.label} htmlFor="email">Email</label>
+              <input
+                style={styles.input}
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label style={styles.label} htmlFor="message">Message</label>
-            <textarea
-              style={styles.textarea}
-              id="message"
-              name="message"
-              placeholder="Write your message..."
-              rows="4"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
+            <div className="form-group">
+              <label style={styles.label} htmlFor="message">Message</label>
+              <textarea
+                style={styles.textarea}
+                id="message"
+                name="message"
+                placeholder="Write your message..."
+                rows="4"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
 
-          <button type="submit" style={styles.button}>Send Message</button>
-        </form>
+            <button type="submit" style={styles.button}>Send Message</button>
+          </form>
+        </div>
+
+        <FloatingFAB />
       </div>
-
-      <FloatingFAB />
-    </div>
+    </>
   );
 }
 

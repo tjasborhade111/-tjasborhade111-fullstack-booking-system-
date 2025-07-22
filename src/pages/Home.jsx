@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegCalendarAlt, FaArrowRight } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
+import Navbar from './Navbar'; // Make sure Navbar file path is correct
 
 function Home() {
   const { theme } = useContext(ThemeContext);
@@ -16,9 +17,9 @@ function Home() {
         ? 'radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.1), transparent 50%), radial-gradient(circle at 75% 75%, rgba(94, 234, 212, 0.1), transparent 50%)'
         : 'radial-gradient(circle at 25% 25%, rgba(96, 165, 250, 0.1), transparent 50%), radial-gradient(circle at 75% 75%, rgba(167, 243, 208, 0.1), transparent 50%)',
       display: 'flex',
-      justifyContent: 'center',
+      flexDirection: 'column',
       alignItems: 'center',
-      padding: '40px 20px',
+      padding: '80px 20px 40px',
       position: 'relative',
     },
     backgroundLayer: {
@@ -48,7 +49,9 @@ function Home() {
     title: {
       fontSize: '2.5rem',
       fontWeight: 800,
-      background: isDark ? 'linear-gradient(135deg, #ffffff, #cbd5e1)' : 'linear-gradient(135deg, #1e293b, #0f172a)',
+      background: isDark
+        ? 'linear-gradient(135deg, #ffffff, #cbd5e1)'
+        : 'linear-gradient(135deg, #1e293b, #0f172a)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       marginBottom: '20px',
@@ -78,43 +81,46 @@ function Home() {
       gap: '10px',
       boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)',
       transition: 'transform 0.2s, box-shadow 0.2s',
-    }
+    },
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.backgroundLayer}></div>
-      <div style={styles.box}>
-        <h1 style={styles.title}>
-          <FaRegCalendarAlt style={{ marginRight: '10px', verticalAlign: 'middle' }} />
-          Welcome to Online Booking System
-        </h1>
-        <p style={styles.subtitle}>
-          Book appointments for Teachers, Doctors, or Salons – all in one place.
-        </p>
-        <p style={styles.text}>
-          Plan your appointments effortlessly. Get connected with the best services tailored to your needs.
-          <br /><br />
-          Whether you're looking for educational support, health consultation, or grooming, we've got it covered.
-          Sign up, log in, and manage all your bookings from one place — anytime, anywhere.
-        </p>
+    <>
+      <Navbar /> {/* 🟡 Navbar added here */}
+      <div style={styles.container}>
+        <div style={styles.backgroundLayer}></div>
+        <div style={styles.box}>
+          <h1 style={styles.title}>
+            <FaRegCalendarAlt style={{ marginRight: '10px', verticalAlign: 'middle' }} />
+            Welcome to Online Booking System
+          </h1>
+          <p style={styles.subtitle}>
+            Book appointments for Teachers, Doctors, or Salons – all in one place.
+          </p>
+          <p style={styles.text}>
+            Plan your appointments effortlessly. Get connected with the best services tailored to your needs.
+            <br /><br />
+            Whether you're looking for educational support, health consultation, or grooming, we've got it covered.
+            Sign up, log in, and manage all your bookings from one place — anytime, anywhere.
+          </p>
 
-        <button
-          style={styles.button}
-          onClick={() => navigate('/categories')}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 12px 35px rgba(59, 130, 246, 0.6)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.4)';
-          }}
-        >
-          Get Started Today <FaArrowRight />
-        </button>
+          <button
+            style={styles.button}
+            onClick={() => navigate('/categories')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 12px 35px rgba(59, 130, 246, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.4)';
+            }}
+          >
+            Get Started Today <FaArrowRight />
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
