@@ -22,14 +22,18 @@ import './App.css';
 function AppContent() {
   const location = useLocation();
 
-  // ❌ Prevent FloatingFAB on auth routes only
-  const authRoutes = ['/login', '/signup'];
-  const hideFAB = authRoutes.includes(location.pathname);
+  const authRoutes = ['/', '/login', '/signup'];
+  const isAuthRoute = authRoutes.includes(location.pathname);
+
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  // Hide FAB if user is not logged in or on login/signup routes
+  const hideFAB = !isLoggedIn || isAuthRoute;
 
   return (
     <div className="app-content">
       <Routes>
-        {/* ✅ Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -37,7 +41,6 @@ function AppContent() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* ✅ Protected Routes */}
         <Route
           path="/categories"
           element={
@@ -80,7 +83,7 @@ function AppContent() {
         />
       </Routes>
 
-      {/* ✅ FAB only on non-auth routes */}
+      {/* ✅ FAB only if user is logged in and not on login/signup */}
       {!hideFAB && <FloatingFAB />}
     </div>
   );
