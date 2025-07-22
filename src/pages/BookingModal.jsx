@@ -299,26 +299,51 @@ const dynamicStyles = {
     transform: 'none',
   },
   // Responsive breakpoints
-  '@media (max-width: 480px)': {
-    modal: {
-      padding: '24px',
-      minWidth: 'unset',
-      margin: '16px',
-      borderRadius: '16px',
-    },
-    title: {
-      fontSize: '1.5rem',
-      marginBottom: '24px',
-    },
-    twoCol: {
-      flexDirection: 'column',
-      gap: '16px',
-    },
-    half: {
-      flex: '1 1 100%',
-      minWidth: 'unset',
-    },
+// Update this part in your `dynamicStyles` object
+'@media (max-width: 480px)': {
+  modal: {
+    padding: '20px',
+    minWidth: 'unset',
+    width: '100%',
+    margin: '16px',
+    borderRadius: '12px',
+    maxHeight: '90vh',
+    overflowY: 'auto',
   },
+  title: {
+    fontSize: '1.5rem',
+    marginBottom: '20px',
+  },
+  twoCol: {
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  half: {
+    flex: '1 1 100%',
+    minWidth: '100%',
+  },
+  input: {
+    fontSize: '0.95rem',
+    padding: '12px 14px',
+  },
+  select: {
+    fontSize: '0.95rem',
+    padding: '12px 14px',
+    paddingRight: '40px',
+  },
+  buttonPrimary: {
+    fontSize: '0.95rem',
+    padding: '14px 18px',
+  },
+  buttonCancel: {
+    fontSize: '0.9rem',
+    padding: '12px 16px',
+  },
+  label: {
+    fontSize: '0.8rem',
+  },
+}
+
 };
 
 
