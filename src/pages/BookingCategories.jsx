@@ -260,6 +260,7 @@ function BookingCategories() {
       <div className="contact-container">
         <div className="contact-box">
           <h2 className="contact-title">Choose a Booking Category</h2>
+          <h3 className="contact-description">Note: Date and time may change. You will be notified via email.</h3>
           <p className="contact-description">Click "Book Now" to continue</p>
 
           <div className="category-grid">

@@ -113,7 +113,9 @@ const dynamicStyles = {
     transform: 'scale(1)',
     backdropFilter: 'blur(20px)',
     position: 'relative',
+    gap:'19px'
   },
+
   title: {
     fontSize: '2rem',
     fontWeight: 800,
@@ -129,56 +131,48 @@ const dynamicStyles = {
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
   },
+
   form: {
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
   },
+
   label: {
     fontSize: '0.875rem',
     fontWeight: 600,
-    marginBottom: '8px',
+    marginBottom: '4px', // CHANGED from 8px to 4px for tighter control
     color: isDark ? '#e2e8f0' : '#475569',
     letterSpacing: '0.025em',
     textTransform: 'uppercase',
   },
+
   input: {
     padding: '14px 16px',
     borderRadius: '12px',
     border: `2px solid ${isDark ? '#475569' : '#e2e8f0'}`,
-    background: isDark 
-      ? 'rgba(15, 23, 42, 0.8)' 
-      : 'rgba(255, 255, 255, 0.8)',
+    background: isDark ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)',
     color: isDark ? '#f1f5f9' : '#1e293b',
     fontSize: '1rem',
     fontWeight: 500,
     outline: 'none',
     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
     backdropFilter: 'blur(8px)',
-    '&:focus': {
-      borderColor: isDark ? '#60a5fa' : '#3b82f6',
-      boxShadow: `0 0 0 4px ${isDark ? 'rgba(96, 165, 250, 0.2)' : 'rgba(59, 130, 246, 0.2)'}`,
-      transform: 'translateY(-1px)',
-    },
-    '&:hover': {
-      borderColor: isDark ? '#64748b' : '#cbd5e1',
-      transform: 'translateY(-1px)',
-    },
+    width: '100%', // NEW: enforce width
+    boxSizing: 'border-box', // ensure padding doesn’t overflow
   },
+
   select: {
     padding: '14px 16px',
     borderRadius: '12px',
     border: `2px solid ${isDark ? '#475569' : '#e2e8f0'}`,
-    background: isDark 
-      ? 'rgba(15, 23, 42, 0.8)' 
-      : 'rgba(255, 255, 255, 0.8)',
+    background: isDark ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)',
     color: isDark ? '#f1f5f9' : '#1e293b',
     fontSize: '1rem',
     fontWeight: 500,
     width: '100%',
     outline: 'none',
     cursor: 'pointer',
-    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
     backdropFilter: 'blur(8px)',
     appearance: 'none',
     backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='${isDark ? '%23cbd5e1' : '%23475569'}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
@@ -186,16 +180,8 @@ const dynamicStyles = {
     backgroundPosition: 'right 12px center',
     backgroundSize: '20px',
     paddingRight: '45px',
-    '&:focus': {
-      borderColor: isDark ? '#60a5fa' : '#3b82f6',
-      boxShadow: `0 0 0 4px ${isDark ? 'rgba(96, 165, 250, 0.2)' : 'rgba(59, 130, 246, 0.2)'}`,
-      transform: 'translateY(-1px)',
-    },
-    '&:hover': {
-      borderColor: isDark ? '#64748b' : '#cbd5e1',
-      transform: 'translateY(-1px)',
-    },
   },
+
   buttonPrimary: {
     background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
     color: '#ffffff',
@@ -219,21 +205,10 @@ const dynamicStyles = {
       transform: 'translateY(0px)',
       boxShadow: '0 2px 10px rgba(16, 185, 129, 0.3)',
     },
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: '-100%',
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-      transition: 'left 0.5s',
-    },
-    '&:hover::before': {
-      left: '100%',
-    },
+
   },
-  buttonCancel: {
+
+   buttonCancel: {
     marginTop: '16px',
     background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
     color: '#ffffff',
@@ -256,70 +231,74 @@ const dynamicStyles = {
       boxShadow: '0 2px 10px rgba(239, 68, 68, 0.2)',
     },
   },
+
+
   fieldGroup: {
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+      marginBottom: '12px'
   },
+
   twoCol: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '20px',
+     marginBottom: '12px'
   },
+
   half: {
-    flex: '1 1 180px',
+    flex: '1 1 48%',
     minWidth: '180px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px', // NEW: better spacing between label and input
   },
-  // Additional utility styles
-  inputFocus: {
-    borderColor: isDark ? '#60a5fa' : '#3b82f6',
-    boxShadow: `0 0 0 4px ${isDark ? 'rgba(96, 165, 250, 0.2)' : 'rgba(59, 130, 246, 0.2)'}`,
-    transform: 'translateY(-1px)',
-  },
-  inputError: {
-    borderColor: '#ef4444',
-    boxShadow: '0 0 0 4px rgba(239, 68, 68, 0.2)',
-  },
+
   helperText: {
     fontSize: '0.8rem',
     color: isDark ? '#94a3b8' : '#64748b',
     marginTop: '6px',
-    fontWeight: 400,
   },
+
   errorText: {
     fontSize: '0.8rem',
     color: '#ef4444',
     marginTop: '6px',
     fontWeight: 500,
   },
-  // Loading state for buttons
+
   buttonLoading: {
     opacity: 0.7,
     cursor: 'not-allowed',
     transform: 'none',
   },
-  // Responsive breakpoints
-// Update this part in your `dynamicStyles` object
-'@media (max-width: 480px)': {
+
+  // ✅ MOBILE STYLES
+ '@media (max-width: 480px)': {
   modal: {
     padding: '20px',
-    minWidth: 'unset',
-    width: '100%',
-    margin: '16px',
+    width: 'calc(100vw - 32px)', // Ensures padding on both sides
+    margin: '16px auto',
     borderRadius: '12px',
-    maxHeight: '90vh',
+    minWidth: 'unset',
+    maxHeight: '80vh',
     overflowY: 'auto',
   },
   title: {
-    fontSize: '1.5rem',
+    fontSize: '1.4rem',
     marginBottom: '20px',
+    textAlign: 'center',
+  },
+  form: {
+    gap: '20px',
   },
   twoCol: {
     flexDirection: 'column',
     gap: '16px',
   },
   half: {
-    flex: '1 1 100%',
+   flex: '1 1 100%',
     minWidth: '100%',
   },
   input: {
@@ -342,9 +321,10 @@ const dynamicStyles = {
   label: {
     fontSize: '0.8rem',
   },
+  
 }
-
 };
+
 
 
   return (

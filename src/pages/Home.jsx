@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegCalendarAlt, FaArrowRight } from 'react-icons/fa';
 import { ThemeContext } from '../context/ThemeContext';
-import Navbar from './Navbar'; // Make sure Navbar file path is correct
+import Navbar from './Navbar';
 
 function Home() {
   const { theme } = useContext(ThemeContext);
@@ -19,7 +19,8 @@ function Home() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '80px 20px 40px',
+      justifyContent: 'center',
+      padding: '60px 20px',
       position: 'relative',
     },
     backgroundLayer: {
@@ -35,9 +36,9 @@ function Home() {
     box: {
       position: 'relative',
       zIndex: 2,
-      background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.9)',
+      background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(16px)',
-      padding: '40px',
+      padding: '30px 20px',
       borderRadius: '20px',
       border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #cbd5e1',
       maxWidth: '800px',
@@ -47,7 +48,7 @@ function Home() {
       color: isDark ? '#e2e8f0' : '#1e293b',
     },
     title: {
-      fontSize: '2.5rem',
+      fontSize: '2rem',
       fontWeight: 800,
       background: isDark
         ? 'linear-gradient(135deg, #ffffff, #cbd5e1)'
@@ -55,24 +56,29 @@ function Home() {
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       marginBottom: '20px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '10px',
     },
     subtitle: {
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
       color: isDark ? '#cbd5e1' : '#334155',
-      marginBottom: '15px',
+      marginBottom: '12px',
     },
     text: {
-      fontSize: '1.05rem',
+      fontSize: '1rem',
       color: isDark ? '#cbd5e1' : '#475569',
       lineHeight: 1.6,
-      marginBottom: '30px',
+      marginBottom: '28px',
     },
     button: {
       background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
       color: '#fff',
       border: 'none',
-      padding: '14px 28px',
-      borderRadius: '50px',
+      padding: '14px 24px',
+      borderRadius: '40px',
       fontSize: '1rem',
       fontWeight: 600,
       cursor: 'pointer',
@@ -80,18 +86,18 @@ function Home() {
       alignItems: 'center',
       gap: '10px',
       boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)',
-      transition: 'transform 0.2s, box-shadow 0.2s',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
     },
   };
 
   return (
     <>
-      <Navbar /> {/* 🟡 Navbar added here */}
+      <Navbar />
       <div style={styles.container}>
         <div style={styles.backgroundLayer}></div>
         <div style={styles.box}>
           <h1 style={styles.title}>
-            <FaRegCalendarAlt style={{ marginRight: '10px', verticalAlign: 'middle' }} />
+            <FaRegCalendarAlt />
             Welcome to Online Booking System
           </h1>
           <p style={styles.subtitle}>
