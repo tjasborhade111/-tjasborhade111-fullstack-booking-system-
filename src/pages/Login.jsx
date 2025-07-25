@@ -333,9 +333,7 @@ function Login() {
             Don’t have an account? <Link to="/signup">Sign up</Link>
           </p>
 
-          <div className="toggle-theme" onClick={toggleTheme}>
-            Switch to {theme === 'dark' ? 'Light' : 'Dark'} Mode
-          </div>
+         
         </div>
       </div>
     </>
