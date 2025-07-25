@@ -30,83 +30,95 @@ function Contact() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '80px 20px',
+      padding: '80px 16px 40px 16px',
       fontFamily: 'Inter, sans-serif',
-      position: 'relative',
-      overflowY: 'auto',
     },
     box: {
-      position: 'relative',
-      maxWidth: '800px',
       width: '100%',
-      background: isDark ? 'rgba(255, 255, 255, 0.06)' : '#ffffff',
-      backdropFilter: 'blur(18px)',
-      WebkitBackdropFilter: 'blur(18px)',
-      padding: '50px',
-      borderRadius: '20px',
-      boxShadow: '0 20px 50px rgba(0, 0, 0, 0.2)',
-      border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #e5e7eb',
-      animation: 'fadeInUp 1.2s ease-out',
-      zIndex: 2,
+      maxWidth: '480px',
+      background: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      padding: '40px 32px',
+      borderRadius: '16px',
+      boxShadow: '0 16px 40px rgba(0, 0, 0, 0.2)',
+      border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #e5e7eb',
+      animation: 'fadeInUp 1s ease-out',
+      boxSizing: 'border-box',
+      margin: '0 auto',
     },
     title: {
-      fontSize: '2.5rem',
+      fontSize: '1.8rem',
       fontWeight: 800,
       textAlign: 'center',
-      marginBottom: '10px',
+      marginBottom: '12px',
       color: isDark ? '#e2e8f0' : '#1e293b',
     },
     description: {
       textAlign: 'center',
-      fontSize: '1.1rem',
-      marginBottom: '30px',
+      fontSize: '1rem',
+      marginBottom: '32px',
       color: isDark ? '#cbd5e1' : '#475569',
+      lineHeight: '1.5',
     },
     form: {
       display: 'flex',
       flexDirection: 'column',
       gap: '20px',
     },
+    fieldContainer: {
+      marginBottom: '4px',
+    },
     label: {
       display: 'block',
-      marginBottom: '6px',
-      fontSize: '1rem',
+      fontSize: '0.95rem',
       fontWeight: '600',
       color: isDark ? '#e0e7ff' : '#1e293b',
+      marginBottom: '8px',
     },
     input: {
       width: '100%',
-      padding: '12px 14px',
+      padding: '14px 16px',
       fontSize: '1rem',
-      border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #cbd5e1',
+      border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid #cbd5e1',
       borderRadius: '8px',
-      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : '#f8fafc',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f9fafb',
       color: isDark ? '#f8fafc' : '#1e293b',
+      boxSizing: 'border-box',
+      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     },
     textarea: {
       width: '100%',
-      padding: '12px 14px',
+      padding: '14px 16px',
       fontSize: '1rem',
-      border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid #cbd5e1',
+      border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid #cbd5e1',
       borderRadius: '8px',
-      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : '#f8fafc',
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f9fafb',
       color: isDark ? '#f8fafc' : '#1e293b',
+      resize: 'vertical',
+      minHeight: '120px',
+      boxSizing: 'border-box',
+      fontFamily: 'Inter, sans-serif',
+      lineHeight: '1.5',
+      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
     },
     button: {
-      padding: '14px',
+      padding: '16px 24px',
       background: isDark ? '#3b82f6' : '#2563eb',
       color: 'white',
       border: 'none',
-      borderRadius: '10px',
-      fontSize: '1.05rem',
+      borderRadius: '8px',
+      fontSize: '1rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       textTransform: 'uppercase',
-      letterSpacing: '1px',
+      letterSpacing: '0.8px',
       transition: 'all 0.3s ease',
+      marginTop: '12px',
+      boxSizing: 'border-box',
     },
     icon: {
-      fontSize: '2.2rem',
+      fontSize: '2rem',
       textAlign: 'center',
       marginBottom: '20px',
       animation: 'pulse 1.5s ease-in-out infinite alternate',
@@ -127,19 +139,101 @@ function Contact() {
             from { transform: scale(1); opacity: 0.7; }
             to { transform: scale(1.05); opacity: 1; }
           }
+          
+          @media (max-width: 768px) {
+            .contact-container {
+              padding: 60px 12px 30px 12px !important;
+            }
+            .contact-box {
+              padding: 32px 24px !important;
+              max-width: 100% !important;
+              margin: 0 8px !important;
+            }
+            .contact-title {
+              font-size: 1.6rem !important;
+            }
+            .contact-description {
+              font-size: 0.95rem !important;
+              margin-bottom: 28px !important;
+            }
+            .contact-form {
+              gap: 18px !important;
+            }
+            .contact-input, .contact-textarea {
+              padding: 12px 14px !important;
+              font-size: 0.95rem !important;
+            }
+            .contact-button {
+              padding: 14px 20px !important;
+              font-size: 0.95rem !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .contact-container {
+              padding: 50px 8px 25px 8px !important;
+            }
+            .contact-box {
+              padding: 28px 20px !important;
+              border-radius: 12px !important;
+            }
+            .contact-title {
+              font-size: 1.5rem !important;
+            }
+            .contact-form {
+              gap: 16px !important;
+            }
+            .contact-textarea {
+              min-height: 100px !important;
+            }
+          }
+          
+          .contact-input:focus, .contact-textarea:focus {
+            outline: none;
+            border-color: ${isDark ? '#60a5fa' : '#3b82f6'};
+            box-shadow: 0 0 0 3px ${isDark ? 'rgba(96, 165, 250, 0.1)' : 'rgba(59, 130, 246, 0.1)'};
+          }
+          
+          .contact-button:hover {
+            background: ${isDark ? '#2563eb' : '#1d4ed8'} !important;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+          }
+          
+          .contact-button:active {
+            transform: translateY(0);
+          }
         `}</style>
 
-        <div style={styles.box} className="contact-box">
-          <div style={styles.icon} className="icon-animation">📞</div>
-          <h2 style={styles.title} className="contact-title">Contact Us</h2>
-          <p style={styles.description} className="contact-description">
+        <div 
+          className="contact-box"
+          style={{
+            ...styles.box,
+          }}
+        >
+          <div style={styles.icon}>📞</div>
+          <h2 
+            className="contact-title"
+            style={styles.title}
+          >
+            Contact Us
+          </h2>
+          <p 
+            className="contact-description"
+            style={styles.description}
+          >
             Have questions or need help with your bookings? Fill out the form below and we'll get back to you shortly.
           </p>
 
-          <form style={styles.form} onSubmit={handleSubmit}>
-            <div className="form-group">
+          <form 
+            className="contact-form"
+            style={styles.form} 
+            onSubmit={handleSubmit}
+          >
+            <div style={styles.fieldContainer}>
               <label style={styles.label} htmlFor="name">Name</label>
               <input
+                className="contact-input"
                 style={styles.input}
                 id="name"
                 name="name"
@@ -151,9 +245,10 @@ function Contact() {
               />
             </div>
 
-            <div className="form-group">
+            <div style={styles.fieldContainer}>
               <label style={styles.label} htmlFor="email">Email</label>
               <input
+                className="contact-input"
                 style={styles.input}
                 id="email"
                 name="email"
@@ -165,21 +260,27 @@ function Contact() {
               />
             </div>
 
-            <div className="form-group">
+            <div style={styles.fieldContainer}>
               <label style={styles.label} htmlFor="message">Message</label>
               <textarea
+                className="contact-textarea"
                 style={styles.textarea}
                 id="message"
                 name="message"
                 placeholder="Write your message..."
-                rows="4"
                 value={formData.message}
                 onChange={handleChange}
                 required
               ></textarea>
             </div>
 
-            <button type="submit" style={styles.button}>Send Message</button>
+            <button 
+              className="contact-button"
+              type="submit" 
+              style={styles.button}
+            >
+              Send Message
+            </button>
           </form>
         </div>
 
