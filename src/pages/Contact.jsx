@@ -283,7 +283,6 @@ function Contact() {
             </button>
           </form>
         </div>
-
         <FloatingFAB />
       </div>
     </>
